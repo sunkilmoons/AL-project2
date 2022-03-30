@@ -10,7 +10,7 @@ public class Store {
     private double latitude;
     private double longitude;
 
-    private double distanceFromQuery;
+    private double distanceFromQuery = 0;
 
     public Store(int id, String address, String city, String state, int postCode, double latitude, double longitude) {
         this.id = id;
@@ -20,6 +20,23 @@ public class Store {
         this.postCode = postCode;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Store #%d. %s, %s, %s, %d. - %,.2f miles.", id, address, city, state, postCode, distanceFromQuery);
+    }
+
+    public static Store fromTokens(String[] tokens) throws IllegalArgumentException {
+        if (tokens.length < 7) throw new IllegalArgumentException("Expecting 7 tokens to create a store object");
+
+        int id = Integer.parseInt(tokens[0]);
+        int postCode = Integer.parseInt(tokens[4]);
+        double lat = Double.parseDouble(tokens[5]);
+        double longitude = Double.parseDouble(tokens[6]);
+
+        // redact extra quotation marks from address
+        return new Store(id, tokens[1].replace("\"", ""), tokens[2], tokens[3], postCode, lat, longitude);
     }
 
     public void computeDistanceFromQuery(int otherLat, int otherLong) {
