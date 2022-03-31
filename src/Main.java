@@ -12,13 +12,13 @@ public class Main {
         String fileName = "./data/random.csv";
 //        String fileName = "./data/StarbucksData.csv";
 
+        // mock query for testing
         Query query = new Query(3, 29.5827351, -98.621094);
 
         List<Store> stores = getStores(fileName, query);
 
-        fileName = "./data/Queries.csv";
-
-        List<Query> queries = getQueries(fileName);
+//        fileName = "./data/Queries.csv";
+//        List<Query> queries = getQueries(fileName);
 
         System.out.printf("Before partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
 
