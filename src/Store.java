@@ -1,3 +1,7 @@
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Store {
 
     private static final double radiusOfEarthInMiles = 3958.8;
@@ -6,13 +10,13 @@ public class Store {
     private String address;
     private String city;
     private String state;
-    private int postCode;
+    private String postCode; // post code may contain hyphens
     private double latitude;
     private double longitude;
 
     private double distanceFromQuery = 0;
 
-    public Store(int id, String address, String city, String state, int postCode, double latitude, double longitude) {
+    public Store(int id, String address, String city, String state, String postCode, double latitude, double longitude) {
         this.id = id;
         this.address = address;
         this.city = city;
@@ -24,22 +28,33 @@ public class Store {
 
     @Override
     public String toString() {
-        return String.format("Store #%d. %s, %s, %s, %d. - %,.2f miles.", id, address, city, state, postCode, distanceFromQuery);
+        return String.format("Store #%d. %s, %s, %s, %s. - %,.2f miles.", id, address, city, state, postCode, distanceFromQuery);
     }
 
     public static Store fromTokens(String[] tokens) throws IllegalArgumentException {
         if (tokens.length < 7) throw new IllegalArgumentException("Expecting 7 tokens to create a store object");
 
         int id = Integer.parseInt(tokens[0]);
-        int postCode = Integer.parseInt(tokens[4]);
         double lat = Double.parseDouble(tokens[5]);
         double longitude = Double.parseDouble(tokens[6]);
 
         // redact extra quotation marks from address
-        return new Store(id, tokens[1].replace("\"", ""), tokens[2], tokens[3], postCode, lat, longitude);
+        return new Store(id, tokens[1].replace("\"", ""), tokens[2], tokens[3], tokens[4], lat, longitude);
     }
 
-    public void computeDistanceFromQuery(int otherLat, int otherLong) {
+    private String idAndDistance() {
+        return String.format("#%d = %,.2f", id, distanceFromQuery);
+    }
+
+    public static String listIdsWithDistance(List<Store> stores) {
+        return stores.stream().map(Store::idAndDistance).collect(Collectors.joining(" | "));
+    }
+
+    public static List<Store> sortedByDistanceFromQuery(List<Store> stores) {
+        return stores.stream().sorted(Comparator.comparingDouble(Store::getDistanceFromQuery)).collect(Collectors.toList());
+    }
+
+    public void computeDistanceFromQuery(double otherLat, double otherLong) {
         double lat1 = Math.toRadians(latitude);
         double lat2 = Math.toRadians(otherLat);
 
@@ -87,11 +102,11 @@ public class Store {
         this.state = state;
     }
 
-    public int getPostCode() {
+    public String getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(int postCode) {
+    public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
 
