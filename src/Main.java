@@ -9,8 +9,8 @@ public class Main {
     public static void main(String[] args) {
 //        String fileName = args[0];
 
-        String fileName = "./data/random.csv";
-//        String fileName = "./data/StarbucksData.csv";
+  //      String fileName = "./data/random.csv";
+       String fileName = "./data/WhataburgerData.csv";
 
         // mock query for testing
         Query query = new Query(3, 29.5827351, -98.621094);
@@ -54,11 +54,14 @@ public class Main {
 
     /**
      * This function is not working correctly even though it is written exactly like he did in lecture #14
+     * 
+     * problem was line 63 (int k = z - l - 1)
+     * solution was int k = z -l
      */
     private static Store selectNthClosestStore(List<Store> stores, int l, int r, int i) {
         if (l == r) return stores.get(l);
         int z = partition(stores, l, r);
-        int k = z - l - 1;
+        int k = z - l;
         System.out.printf("i = %d, l = %d, r = %d, z = %d, k = %d\n", i, l, r, z, k);
         if (i == k) {
             return stores.get(z);
@@ -72,11 +75,14 @@ public class Main {
      * This function does work correctly, it is written exactly like he did in lecture #11
      * We need to change the pivot selection before submission to a random number,
      * but for now it's set to p for consistency
+     * 
+     * problem was j < q in for loop
+     * solution was j <= q in for loop
      */
     private static int partition(List<Store> stores, int p, int q) {
         Store pivot = stores.get(p);
         int i = p; // divide the <= pivot and > pivot portion
-        for (int j = p + 1; j < q; ++j) {
+        for (int j = p + 1; j <= q; ++j) {
             if (stores.get(j).getDistanceFromQuery() <= pivot.getDistanceFromQuery()) {
                 i++;
                 Collections.swap(stores, j, i);
