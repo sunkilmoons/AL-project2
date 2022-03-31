@@ -16,11 +16,15 @@ public class Main {
 
         List<Store> stores = getStores(fileName, query);
 
+        fileName = "./data/Queries.csv";
+
+        List<Query> queries = getQueries(fileName);
+
         System.out.printf("Before partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
 
-        Store unoptimized = getNthClosestStoreUnoptimized(stores, query.getStoreCount() - 1);
+        Store unoptimized = getNthClosestStoreUnoptimized(stores, query.getNumber() - 1);
 
-        Store nthClosestStore = selectNthClosestStore(stores, 0, stores.size() - 1, query.getStoreCount() - 1);
+        Store nthClosestStore = selectNthClosestStore(stores, 0, stores.size() - 1, query.getNumber() - 1);
 
         System.out.printf("After partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
 
@@ -86,7 +90,7 @@ public class Main {
      * Prints the query results in the format he wants
      */
     private static void printQueryResults(List<Store> stores, Query query) {
-        System.out.printf("The %d closest stores to (%f, %f):\n", stores.size(), query.getLatitude(), query.getLongitude());
+        System.out.printf("The %d closest stores to (%f, %f):\n", stores.size(), query.getQlat(), query.getQlong());
         System.out.println(stores.stream().map(Store::toString).collect(Collectors.joining("\n")));
     }
 
@@ -110,7 +114,7 @@ public class Main {
 
                 try {
                     Store store = Store.fromTokens(tokens);
-                    store.computeDistanceFromQuery(query.getLatitude(), query.getLongitude());
+                    store.computeDistanceFromQuery(query.getQlat(), query.getQlong());
                     stores.add(store);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -128,5 +132,33 @@ public class Main {
             e.printStackTrace();
         }
         return stores;
+    }
+    
+    private static List<Query> getQueries(String fileName) {
+        ArrayList<Query> queries = new ArrayList<>();
+        try {
+            File file = new File(fileName);
+
+            Scanner sc = new Scanner(file);
+
+            boolean firstLine = true;
+            int lineNum = 2;
+            while(sc.hasNextLine()) {
+                String line = sc.nextLine();
+                if (firstLine) { firstLine = false; continue; }
+
+                String[] tokens = line.split(",");
+
+                try {
+                    queries.add(Query.fromTokens(tokens));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return queries;
     }
 }
