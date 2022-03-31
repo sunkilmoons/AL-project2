@@ -9,12 +9,16 @@ public class Main {
 //        String fileName = args[0];
 
         // using small input data for testing
-        String fileName = "./data/small_data.csv";
+        String fileName = "./data/WhataburgerData.csv";
 
         List<Store> stores = getStores(fileName);
+        
+        fileName = "./data/Queries.csv";
+        
+        List<Query> queries = getQueries(fileName);
 
         // with mocked query latitude and longitude...
-        printQueryResults(stores, 29.5827351, -98.621094);
+        //printQueryResults(stores, 29.5827351, -98.621094);
     }
 
     private static void printQueryResults(List<Store> stores, double queryLatitude, double queryLongitude) {
@@ -55,5 +59,33 @@ public class Main {
             e.printStackTrace();
         }
         return stores;
+    }
+    
+    private static List<Query> getQueries(String fileName) {
+        ArrayList<Query> queries = new ArrayList<>();
+        try {
+            File file = new File(fileName);
+
+            Scanner sc = new Scanner(file);
+
+            boolean firstLine = true;
+            int lineNum = 2;
+            while(sc.hasNextLine()) {
+                String line = sc.nextLine();
+                if (firstLine) { firstLine = false; continue; }
+
+                String[] tokens = line.split(",");
+
+                try {
+                    queries.add(Query.fromTokens(tokens));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return queries;
     }
 }
