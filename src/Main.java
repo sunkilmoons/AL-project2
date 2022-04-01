@@ -40,17 +40,17 @@ public class Main {
             System.out.println("Good job, the stores are equal");
         }
 
-        System.out.println("Performing insertion sort...");
-        // drop unused data
-        ArrayList<Store> newStores = new ArrayList<>();
-        int i = 0;
-        while (i < query.getNumber()) {
-            newStores.add(stores.get(i));
-            i++;
-        }
-        System.out.printf("Before insertion sort: %s\n", Store.listIdsWithDistance(newStores));
-        insertionSort(stores);
-        System.out.printf("After insertion sort %s\n", Store.listIdsWithDistance(newStores));
+//        System.out.println("Performing insertion sort...");
+//        // drop unused data
+//        ArrayList<Store> newStores = new ArrayList<>();
+//        int i = 0;
+//        while (i < query.getNumber()) {
+//            newStores.add(stores.get(i));
+//            i++;
+//        }
+//        System.out.printf("Before insertion sort: %s\n", Store.listIdsWithDistance(newStores));
+//        insertionSort(stores);
+//        System.out.printf("After insertion sort %s\n", Store.listIdsWithDistance(newStores));
 
 //        printQueryResults(stores, query);
     }
@@ -97,9 +97,10 @@ public class Main {
      */
     private static Store selectNthClosestStore(List<Store> stores, int l, int r, int i) {
         if (l >= r) {
+            System.out.printf("l (%d) is greater than or equal to r (%d)\n", l, r);
             return l > r ? stores.get(r) : stores.get(l);
         }
-        int z = partition(stores, l, r);
+        int z = randomPartition(stores, l, r);
         int k = z - l;
         System.out.printf("i = %d, l = %d, r = %d, z = %d, k = %d\n", i, l, r, z, k);
         if (i == k) {
@@ -124,8 +125,7 @@ public class Main {
      * solution was j <= q in for loop
      */
     private static int partition(List<Store> stores, int p, int q) {
-        //Store pivot = stores.get(p);
-        Store pivot = stores.get(getRandomNumber(p, q));
+        Store pivot = stores.get(p);
         int i = p; // divide the <= pivot and > pivot portion
         for (int j = p + 1; j <= q; ++j) {
             if (stores.get(j).getDistanceFromQuery() <= pivot.getDistanceFromQuery()) {
@@ -135,6 +135,13 @@ public class Main {
         }
         Collections.swap(stores, p, i);
         return i;
+    }
+
+    private static int randomPartition(List<Store> stores, int p, int q) {
+        int n = q - 1 + 1;
+        int pivot = (int) Math.random() * (n - 1);
+        Collections.swap(stores, 1 + pivot, q);
+        return partition(stores, p, q);
     }
 
     /**
