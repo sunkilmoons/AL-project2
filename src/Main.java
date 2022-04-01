@@ -22,7 +22,9 @@ public class Main {
 
         for (Query query : queries) {
             List<Store> stores = getStores(fileName);
-            stores.forEach((s) -> s.computeDistanceFromQuery(query.getQlat(), query.getQlong()));
+            for (Store store : stores) {
+                store.computeDistanceFromQuery(query.getQlat(), query.getQlong());
+            }
             selectNthClosestStore(stores, 0, stores.size() - 1, query.getNumber() - 1);
             ArrayList<Store> newStores = new ArrayList<>();
             int i = 0;
@@ -61,13 +63,13 @@ public class Main {
     /**
      * Gets the nth closes store correctly everytime, but doesn't use the algorithm he wants us to use.
      */
-    private static Store getNthClosestStoreUnoptimized(List<Store> stores, int i) {
-        return stores
-                .stream()
-                .sorted(Comparator.comparingDouble(Store::getDistanceFromQuery))
-                .collect(Collectors.toList())
-                .get(i);
-    }
+//    private static Store getNthClosestStoreUnoptimized(List<Store> stores, int i) {
+//        return stores
+//                .stream()
+//                .sorted(Comparator.comparingDouble(Store::getDistanceFromQuery))
+//                .collect(Collectors.toList())
+//                .get(i);
+//    }
 
     /**
      * This function is not working correctly even though it is written exactly like he did in lecture #14
@@ -129,7 +131,9 @@ public class Main {
      */
     private static void printQueryResults(List<Store> stores, Query query) {
         System.out.printf("The %d closest stores to (%f, %f):\n", stores.size(), query.getQlat(), query.getQlong());
-        System.out.println(stores.stream().map(Store::toString).collect(Collectors.joining("\n")));
+        for (Store store : stores) {
+            System.out.println(store.toString());
+        }
         System.out.println("");
     }
 
