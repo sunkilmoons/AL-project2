@@ -44,6 +44,32 @@ public class Main {
 //        printQueryResults(stores, query);
     }
 
+//    public static void insertionSort(List<Store> stores)
+//    {
+//        int n = stores.size();
+//        for (int i=1; i<n; ++i)
+//        {
+//            Store key = stores.get(i);
+//            int j = i - 1;
+//
+//            /* Move elements of arr[0..i-1], that are
+//               greater than key, to one position ahead
+//               of their current position */
+//            while (j>=0 && arr[j] > key)
+//            {
+//                arr[j+1] = arr[j];
+//                j = j-1;
+//            }
+//            arr[j+1] = key;
+//        }
+//    }
+
+    public static int getRandomNumber(int min, int max) {
+        int it = (int) ((Math.random() * (max - min)) + min);
+        System.out.printf("Random number %d generated in range %d - %d\n", it, min, max);
+        return it;
+    }
+
     /**
      * Gets the nth closes store correctly everytime, but doesn't use the algorithm he wants us to use.
      */
