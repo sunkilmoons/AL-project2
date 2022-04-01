@@ -9,8 +9,8 @@ public class Main {
     public static void main(String[] args) {
 //        String fileName = args[0];
 
-//        String fileName = "./data/random.csv";
-       String fileName = "./data/WhataburgerData.csv";
+        String fileName = "./data/random.csv";
+//       String fileName = "./data/WhataburgerData.csv";
 //        String fileName = "./data/StarbucksData.csv";
 
         // mock query for testing
@@ -26,7 +26,6 @@ public class Main {
 //        System.out.printf("Before partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
 
         Store unoptimized = getNthClosestStoreUnoptimized(stores, query.getNumber() - 1);
-
         Store nthClosestStore = selectNthClosestStore(stores, 0, stores.size() - 1, query.getNumber() - 1);
 
 //        System.out.printf("After partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
@@ -45,7 +44,7 @@ public class Main {
         // drop unused data
         ArrayList<Store> newStores = new ArrayList<>();
         int i = 0;
-        while (i <= query.getNumber()) {
+        while (i < query.getNumber()) {
             newStores.add(stores.get(i));
             i++;
         }
@@ -98,7 +97,6 @@ public class Main {
      */
     private static Store selectNthClosestStore(List<Store> stores, int l, int r, int i) {
         if (l >= r) {
-//            System.out.printf("L(%d) is greater than or equal to r (%d)\n", l, r);
             return l > r ? stores.get(r) : stores.get(l);
         }
         int z = partition(stores, l, r);
@@ -127,7 +125,7 @@ public class Main {
      */
     private static int partition(List<Store> stores, int p, int q) {
         //Store pivot = stores.get(p);
-        Store pivot = stores.get((int)(Math.random()*(q-p))+p);
+        Store pivot = stores.get(getRandomNumber(p, q));
         int i = p; // divide the <= pivot and > pivot portion
         for (int j = p + 1; j <= q; ++j) {
             if (stores.get(j).getDistanceFromQuery() <= pivot.getDistanceFromQuery()) {
