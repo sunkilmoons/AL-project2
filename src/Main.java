@@ -10,8 +10,8 @@ public class Main {
 //        String fileName = args[0];
 
 //        String fileName = "./data/random.csv";
-//       String fileName = "./data/WhataburgerData.csv";
-        String fileName = "./data/StarbucksData.csv";
+       String fileName = "./data/WhataburgerData.csv";
+//        String fileName = "./data/StarbucksData.csv";
 
         // mock query for testing
         Query query = new Query(3, 29.5827351, -98.621094);
@@ -41,28 +41,37 @@ public class Main {
             System.out.println("Good job, the stores are equal");
         }
 
+        System.out.println("Performing insertion sort...");
+        // drop unused data
+        ArrayList<Store> newStores = new ArrayList<>();
+        int i = 0;
+        while (i <= query.getNumber()) {
+            newStores.add(stores.get(i));
+            i++;
+        }
+        System.out.printf("Before insertion sort: %s\n", Store.listIdsWithDistance(newStores));
+        insertionSort(stores);
+        System.out.printf("After insertion sort %s\n", Store.listIdsWithDistance(newStores));
+
 //        printQueryResults(stores, query);
     }
 
-//    public static void insertionSort(List<Store> stores)
-//    {
-//        int n = stores.size();
-//        for (int i=1; i<n; ++i)
-//        {
-//            Store key = stores.get(i);
-//            int j = i - 1;
-//
-//            /* Move elements of arr[0..i-1], that are
-//               greater than key, to one position ahead
-//               of their current position */
-//            while (j>=0 && arr[j] > key)
-//            {
-//                arr[j+1] = arr[j];
-//                j = j-1;
-//            }
-//            arr[j+1] = key;
-//        }
-//    }
+    public static void insertionSort(List<Store> stores)
+    {
+        int n = stores.size();
+        for (int i=1; i<n; ++i)
+        {
+            Store key = stores.get(i);
+            int j = i - 1;
+
+            while (j>=0 && stores.get(j).getDistanceFromQuery() > key.getDistanceFromQuery())
+            {
+                stores.set(j+1, stores.get(j));
+                j = j - 1;
+            }
+            stores.set(j + 1, key);
+        }
+    }
 
     public static int getRandomNumber(int min, int max) {
         int it = (int) ((Math.random() * (max - min)) + min);
