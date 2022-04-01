@@ -301,13 +301,13 @@ class Store {
         return String.format("#%d = %,.2f", id, distanceFromQuery);
     }
 
-    public static String listIdsWithDistance(List<Store> stores) {
-        return stores.stream().map(Store::idAndDistance).collect(Collectors.joining(" | "));
-    }
-
-    public static List<Store> sortedByDistanceFromQuery(List<Store> stores) {
-        return stores.stream().sorted(Comparator.comparingDouble(Store::getDistanceFromQuery)).collect(Collectors.toList());
-    }
+//    public static String listIdsWithDistance(List<Store> stores) {
+//        return stores.stream().map(Store::idAndDistance).collect(Collectors.joining(" | "));
+//    }
+//
+//    public static List<Store> sortedByDistanceFromQuery(List<Store> stores) {
+//        return stores.stream().sorted(Comparator.comparingDouble(Store::getDistanceFromQuery)).collect(Collectors.toList());
+//    }
 
     public void computeDistanceFromQuery(double otherLat, double otherLong) {
         double lat1 = Math.toRadians(latitude);
