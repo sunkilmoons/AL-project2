@@ -112,7 +112,8 @@ public class Main {
      * solution was j <= q in for loop
      */
     private static int partition(List<Store> stores, int p, int q) {
-        Store pivot = stores.get(p);
+        //Store pivot = stores.get(p);
+        Store pivot = stores.get((int)(Math.random()*(q-p))+p);
         int i = p; // divide the <= pivot and > pivot portion
         for (int j = p + 1; j <= q; ++j) {
             if (stores.get(j).getDistanceFromQuery() <= pivot.getDistanceFromQuery()) {
