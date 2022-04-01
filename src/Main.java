@@ -98,9 +98,14 @@ public class Main {
         if (i == k) {
             return stores.get(z);
         }
-        else if (i < k)
+        else if (i < k) {
+            System.out.println("i < k");
             return selectNthClosestStore(stores, l, z - 1, i);
-        else return selectNthClosestStore(stores, z + 1, r, i - k);
+        }
+        else {
+            System.out.println("i > k");
+            return selectNthClosestStore(stores, z + 1, r, i - k);   
+        }
     }
 
     /**
