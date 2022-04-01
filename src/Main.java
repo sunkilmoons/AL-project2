@@ -5,17 +5,17 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-//        String fileName = args[0];
+        String fileName = args[0];
 
 //        String fileName = "./data/random.csv";
-       String fileName = "./data/WhataburgerData.csv";
+//       String fileName = "./data/WhataburgerData.csv";
 //        String fileName = "./data/StarbucksData.csv";
 
         // mock query for testing
 //        Query query = new Query(3, 29.5827351, -98.621094);
 
 
-        String queriesFile = "./data/Queries.csv";
+        String queriesFile = "Queries.csv";
         List<Query> queries = getQueries(queriesFile);
 
         for (Query query : queries) {
