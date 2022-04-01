@@ -9,29 +9,32 @@ public class Main {
     public static void main(String[] args) {
 //        String fileName = args[0];
 
-  //      String fileName = "./data/random.csv";
-       String fileName = "./data/WhataburgerData.csv";
+//        String fileName = "./data/random.csv";
+//       String fileName = "./data/WhataburgerData.csv";
+        String fileName = "./data/StarbucksData.csv";
 
         // mock query for testing
         Query query = new Query(3, 29.5827351, -98.621094);
+
+        System.out.printf("Searching for the %d closest store...\n", query.getNumber());
 
         List<Store> stores = getStores(fileName, query);
 
 //        fileName = "./data/Queries.csv";
 //        List<Query> queries = getQueries(fileName);
 
-        System.out.printf("Before partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
+//        System.out.printf("Before partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
 
         Store unoptimized = getNthClosestStoreUnoptimized(stores, query.getNumber() - 1);
 
         Store nthClosestStore = selectNthClosestStore(stores, 0, stores.size() - 1, query.getNumber() - 1);
 
-        System.out.printf("After partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
+//        System.out.printf("After partitioning stores are: %s\n", Store.listIdsWithDistance(stores));
 
         /**
          * Test the function against the unoptimized one to ensure it's working correctly
          */
-        if (nthClosestStore.getId() != unoptimized.getId()) {
+        if (nthClosestStore.getDistanceFromQuery() != unoptimized.getDistanceFromQuery()) {
             System.out.printf("Stores are not equal...\nUnoptimized: %s\nYours: %s\n", unoptimized, nthClosestStore);
         }
         else {
@@ -59,7 +62,10 @@ public class Main {
      * solution was int k = z -l
      */
     private static Store selectNthClosestStore(List<Store> stores, int l, int r, int i) {
-        if (l == r) return stores.get(l);
+        if (l >= r) {
+//            System.out.printf("L(%d) is greater than or equal to r (%d)\n", l, r);
+            return l > r ? stores.get(r) : stores.get(l);
+        }
         int z = partition(stores, l, r);
         int k = z - l;
         System.out.printf("i = %d, l = %d, r = %d, z = %d, k = %d\n", i, l, r, z, k);
